@@ -10,7 +10,6 @@
         background-repeat: no-repeat;
         background-attachment: fixed;
     }
-
 </style>
 
 <br>
@@ -19,23 +18,26 @@
 
 @if (Model.errorMessage.Length > 0)
 {
-    <div class='alert alert-warming alert-dismissible fade show' role="alert">
-        <strong>@Model.errorMessage</strong>
-        <button type='button' class='btn-close' data-bs-dismiss='alert' arial-label='Close'></button>
-    </div>
+<div class='alert alert-warming alert-dismissible fade show' role="alert">
+    <strong>@Model.errorMessage</strong>
+    <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+</div>
 }
 <form method="POST">
     <div class="row mb-3">
-
-
-        <label class="col-sm-3 col-form-label" style="color:white; border-color:white;"> Name <p style="color:orangered; font-size:14px;">(Optional)</p></label>
+        <label class="col-sm-3 col-form-label" style="color:white; border-color:white;">Donor Name <p style="color:orangered; font-size:14px;">(Optional)</p></label>
         <div class="col-sm-6">
             <input type="text" class="form-control" name="name" value="@Model.donateMoneyInfo.donorName">
         </div>
-
     </div>
     <div class="row mb-3">
-        <label class="col-sm-3 col-form-label" style="color:white; border-color:white;">Amount</label>
+        <label class="col-sm-3 col-form-label" style="color:white; border-color:white;"> Disaster Name</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" name="disasterName" value="@Model.donateMoneyInfo.disasterName">
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label class="col-sm-3 col-form-label" style="color:white; border-color:white;"> Amount</label>
         <div class="col-sm-6">
             <input type="text" class="form-control" name="amount" value="@Model.donateMoneyInfo.amount">
         </div>
@@ -43,15 +45,15 @@
 
     @if (Model.successMessage.Length > 0)
     {
-        <div class='alert alert-warming alert-dismissible fade show' role="alert">
-            <strong>@Model.successMessage</strong>
-            <button type='button' class='btn-close' data-bs-dismiss='alert' arial-label='Close'></button>
-        </div>
+    <div class='alert alert-warming alert-dismissible fade show' role="alert">
+        <strong>@Model.successMessage</strong>
+        <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+    </div>
     }
 
     <div class="row mb-3">
         <div class="offset-sm-3 col-sm-3 d-grid">
-            <button type="submit" class="btn btn-primary" style="background-color:purple; border-color:purple;">Donate</button>
+            <button type="submit" class="btn btn-primary" style="background-color:purple; border-color:purple;">Save</button>
         </div>
         <div class="col-sm-3 d-grid">
             <a class="btn btn-outline-primary" href="/Identity/Donates/MoneyIndex" role="button" style="background-color:orange; border-color:orange;">Cancel</a>

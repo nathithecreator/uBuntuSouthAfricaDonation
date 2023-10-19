@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using uBuntuSouthAfrica.Pages.Donates;
-using System.Reflection.PortableExecutable;
+using System;
 using System.Data.SqlClient;
 
 namespace uBuntuSouthAfrica.Pages.Donates
@@ -36,14 +35,13 @@ namespace uBuntuSouthAfrica.Pages.Donates
                             {
                                 donateMoneyInfo.id = "" + reader.GetInt32(0).ToString();
                                 donateMoneyInfo.donorName = reader.GetString(1);
-                                donateMoneyInfo.date = reader.GetDateTime(2).ToString();
-                                donateMoneyInfo.amount = "" + reader.GetDecimal(3).ToString();
-
+                                donateMoneyInfo.disasterName = reader.GetString(2); // Add this line for DisasterName
+                                donateMoneyInfo.date = reader.GetDateTime(3).ToString(); // Adjust index for Date
+                                donateMoneyInfo.amount = "" + reader.GetDecimal(4).ToString(); // Adjust index for Amount
                             }
                         }
                     }
                 }
-
             }
             catch (Exception ex)
             {
@@ -55,13 +53,12 @@ namespace uBuntuSouthAfrica.Pages.Donates
         {
             donateMoneyInfo.id = Request.Query["id"];
             donateMoneyInfo.donorName = Request.Form["name"];
+            donateMoneyInfo.disasterName = Request.Form["disasterName"]; // Add this line for DisasterName
             donateMoneyInfo.amount = Request.Form["amount"];
-         
 
-            if (donateMoneyInfo.donorName.Length == 0 || 
-                donateMoneyInfo.amount.Length == 0)
+            if (donateMoneyInfo.donorName.Length == 0 || donateMoneyInfo.disasterName.Length == 0 || donateMoneyInfo.amount.Length == 0)
             {
-                errorMessage = "All the field are required";
+                errorMessage = "All fields are required";
                 return;
             }
 
@@ -74,20 +71,18 @@ namespace uBuntuSouthAfrica.Pages.Donates
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    String sql = "UPDATE MoneyDonations SET DonorName=@donorName, Amount=@amount WHERE ID=@id";
-
+                    String sql = "UPDATE MoneyDonations SET DonorName=@donorName, DisasterName=@disasterName, Amount=@amount WHERE ID=@id";
 
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
                         command.Parameters.AddWithValue("@id", donateMoneyInfo.id);
                         command.Parameters.AddWithValue("@donorName", donateMoneyInfo.donorName);
+                        command.Parameters.AddWithValue("@disasterName", donateMoneyInfo.disasterName); // Add this line for DisasterName
                         command.Parameters.AddWithValue("@amount", donateMoneyInfo.amount);
-                      
 
                         command.ExecuteNonQuery();
                     }
                 }
-
             }
             catch (Exception ex)
             {
@@ -96,8 +91,6 @@ namespace uBuntuSouthAfrica.Pages.Donates
             }
 
             Response.Redirect("/Identity/Donates/MoneyIndex");
-
-
         }
     }
 }
