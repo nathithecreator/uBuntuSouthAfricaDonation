@@ -12,7 +12,7 @@ namespace uBuntuSouthAfrica.Pages.Donates
         public List<DisasterInfo> listDonate = new List<DisasterInfo>();
         public void OnGet()
         {
-            try 
+            try
             {
                 string connectionString = "Server=tcp:djpromorosebank1.database.windows.net,1433;Initial Catalog=DJPromoWebApp;Persist Security Info=False;User ID=djnathi;Password=Mamabolo777;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;";
 
@@ -38,7 +38,7 @@ namespace uBuntuSouthAfrica.Pages.Donates
                                 disasters.Description = reader.GetString(3);
                                 disasters.DonationType = reader.GetString(4);
 
-                           
+
 
                                 listDonate.Add(disasters);
                             }
