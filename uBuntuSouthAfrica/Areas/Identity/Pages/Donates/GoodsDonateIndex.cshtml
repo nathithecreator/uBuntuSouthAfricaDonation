@@ -10,7 +10,6 @@
         background-repeat: no-repeat;
         background-attachment: fixed;
     }
-
 </style>
 
 <br>
@@ -20,27 +19,31 @@
 <table class="table" style="background-color: white;">
     <thead>
         <tr>
+            <th>Disaster</th>
             <th>Donor </th>
             <th>Number Of Items</th>
             <th>Category</th>
             <th>Item Description</th>
+            <th>Goods Value</th>
             <th>Action</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model.listDonate)
         {
-            <tr>
-                <td>@item.DonorName</td>
-                <td>@item.NumberOfItems</td>
-                <td>@item.Category</td>
-                <td>@item.ItemDescription</td>
-                <td>
-                    <a class="btn btn-primary btn-sm" href="/Identity/Donates/EditGoods?id=@item.id" style="background-color:orange; border-color:orange;">Edit</a>
-                </td>
-                
+        <tr>
+            <td>@item.DisasterName</td>
+            <td>@item.DonorName</td>
+            <td>@item.NumberOfItems</td>
+            <td>@item.Category</td>
+            <td>@item.ItemDescription</td>
+            <td>@item.GoodsCost</td>
+            <td>
+                <a class="btn btn-primary btn-sm" href="/Identity/Donates/EditGoods?id=@item.id" style="background-color:orange; border-color:orange;">Edit</a>
+            </td>
 
-            </tr>
+
+        </tr>
         }
     </tbody>
 </table>
