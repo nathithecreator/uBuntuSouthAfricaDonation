@@ -1,0 +1,99 @@
+﻿@page
+@model uBuntuSouthAfrica.Pages.Donates.AddGoodsModel
+
+
+<style>
+    body {
+        background-image: url('/images/f17.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
+
+</style>
+
+<br>
+
+<h1 style="text-align: center; font-weight:bold; color:purple;">Goods Donation</h1>
+
+@if (Model.errorMessage.Length > 0)
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>@Model.errorMessage</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<form method="POST">
+    <div class="row mb-3">
+        <label class="col-sm-3 col-form-label">Name <small style="color: orangered; font-size: 14px;">(Optional)</small></label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" name="name" value="@Model.donateGoodsInfo.DonorName">
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label class="col-sm-3 col-form-label">Category</label>
+        <div class="col-sm-6">
+            <select class="form-select" name="category" value="@Model.donateGoodsInfo.Category">
+                <option value="Clothes">Clothes</option>
+                <option value="Non-perishable foods">Non-perishable foods</option>
+                <option value="Others">Others</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="row mb-3" id="otherCategoryInput" style="display: none;">
+        <label class="col-sm-3 col-form-label">Other Category</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" name="category" value="@Model.donateGoodsInfo.Category">
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label class="col-sm-3 col-form-label">Item Description</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" name="description" value="@Model.donateGoodsInfo.ItemDescription">
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label class="col-sm-3 col-form-label">Number Of Items</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" name="numberOfItems" value="@Model.donateGoodsInfo.NumberOfItems">
+        </div>
+    </div>
+
+    @if (Model.successMessage.Length > 0)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>@Model.successMessage</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="row mb-3">
+        <div class="offset-sm-3 col-sm-3 d-grid">
+            <button type="submit" class="btn btn-primary" style="background-color:purple; border-color:purple;">Donate</button>
+        </div>
+        <div class="col-sm-3 d-grid">
+            <a class="btn btn-outline-primary" href="/Identity/Donates/GoodsDonateIndex" role="button" style="background-color:orange; border-color:orange;">Cancel</a>
+        </div>
+    </div>
+</form>
+
+<script>
+    const categorySelect = document.querySelector('[name="category"]');
+    const otherCategoryInput = document.getElementById('otherCategoryInput');
+
+    function toggleOtherCategoryInput() {
+        if (categorySelect.value === 'Others') {
+            otherCategoryInput.style.display = 'block';
+        } else {
+            otherCategoryInput.style.display = 'none';
+        }
+    }
+
+    // Initial state check on page load
+    toggleOtherCategoryInput();
+
+    categorySelect.addEventListener('change', toggleOtherCategoryInput);
+</script>

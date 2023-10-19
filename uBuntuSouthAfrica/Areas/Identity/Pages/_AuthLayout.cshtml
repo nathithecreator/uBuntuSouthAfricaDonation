@@ -1,0 +1,62 @@
+﻿@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+     body {
+       /* background-image: url('/images/f6.jpg');*/
+
+        background-image: url('/images/f1.jpg');
+        background-size: cover; /* Adjust to your preference */
+        background-repeat: no-repeat; /* Adjust to your preference */
+        background-attachment: fixed; /* Adjust to your preference */
+
+    }
+
+    
+
+
+</style>
+
+
+<div class="row justify-content-center" >
+    <div class="col-5 mt-5" style="background-color: white;">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                    <a class="nav-link" href="/Identity/Account/Login" style="color: purple;">
+                        Sign In
+                     </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Identity/Account/Register" style="color: purple;">
+                        Register
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="card-body">
+            <div class="row justify-content-center">
+                <div class="col-10 my-4">
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+    @await RenderSectionAsync("Scripts", required: false)
+    <script>
+        $(function(){
+            const currentPage = location.pathname;
+            $('.nav-tabs li a').each(function() {
+                const $this = $(this);
+                if (currentPage.toLowerCase().indexOf($this.attr('href').toLowerCase()) !== -1) {
+                    $this.addClass('active');
+                }
+            })
+        })
+    </script>
+}

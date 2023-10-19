@@ -1,0 +1,43 @@
+﻿@page
+@model uBuntuSouthAfrica.Pages.Donates.DisasterIndexModel
+@{
+}
+<style>
+    body {
+        background-image: url('/images/f19.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
+</style>
+
+<br>
+<h2 style="text-align: center; font-weight:bold; color:purple;">List of Disasters</h2>
+<a class='btn  btn-sm' href="/Identity/Donates/AddDisaster" style='background-color: orange; border-color:orange;'>Report a Disaster</a>
+
+<table class="table" style="background-color: white;">
+    <thead>
+        <tr>
+            <th>Disaster Name</th>
+            <th>Location</th>
+            <th>Description</th>
+            <th>Type</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.listDonate)
+        {
+                <tr>
+                <td>@item.DisasterName</td>
+                <td>@item.Location</td>
+                <td>@item.Description</td>
+                <td>@item.DonationType</td>
+                <td>
+                    <a class="btn btn-primary btn-sm" href="/Identity/Donates/EditDisaster?id=@item.id" style="background-color:orange; border-color:orange;">Edit</a>
+                </td>
+                </tr>
+        }
+    </tbody>
+</table>
+
