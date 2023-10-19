@@ -1,44 +1,38 @@
-﻿@page 
+﻿@page
 @model uBuntuSouthAfrica.Pages.Donates.IndexModel
-@{
-}
 
 <style>
     body {
-       
-
         background-image: url('/images/f13.jpg');
-        background-size: cover; 
-        background-repeat: no-repeat; 
-        background-attachment: fixed; 
-
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
     }
-
 </style>
 
 <br>
-<h2 style="text-align: center; font-weight:bold; color:white;">List of Money Donations</h2>
-<a class='btn btn-primary btn-sm' style='background-color: orange; border-color:orange;' href="/Identity/Donates/AddMoney">Donate Money</a>
+<h2 style="text-align: center; font-weight: bold; color: white;">The List of Money Donations</h2>
+<a class='btn btn-primary btn-sm' style='background-color: orange; border-color: orange;' href="/Identity/Donates/AddMoney">Donate Money</a>
 <table class="table" style="background-color: white;">
     <thead>
-        <tr> 
+        <tr>
             <th>Donor Name</th>
+            <th>Disaster Name</th>
             <th>Amount</th>
-            <th>Action</th> 
-
-            
+            <th>Action</th>
         </tr>
     </thead>
     <tbody>
-        @foreach(var item in Model.listDonate)
+        @foreach (var item in Model.listDonate)
         {
-            <tr>
-                <td>@item.donorName</td>
-                <td>@item.amount</td>
-                <td>
-                    <a class="btn btn-primary btn-sm" href="/Identity/Donates/EditMoney?id=@item.id" style="background-color:orange; border-color:orange;">Edit</a>
-                </td>
-            </tr>
+        <tr>
+            <td>@item.donorName</td>
+            <td>@item.disasterName</td>
+            <td>@item.amount</td>
+            <td>
+                <a class="btn btn-primary btn-sm" href="/Identity/Donates/EditMoney?id=@item.Id" style="background-color: orange; border-color: orange;">Edit</a>
+            </td>
+        </tr>
         }
     </tbody>
 </table>
