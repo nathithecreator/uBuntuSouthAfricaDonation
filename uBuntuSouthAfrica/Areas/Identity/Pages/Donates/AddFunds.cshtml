@@ -1,0 +1,49 @@
+﻿@page
+@model uBuntuSouthAfrica.Areas.Identity.Pages.Donates.AddFundsModel
+@{
+}
+
+<style>
+    body {
+        background-image: url('/images/ff1.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
+</style>
+<br>
+
+<h1 style="text-align: center; font-weight:bold; color:white;">Add Money to Available Funds</h1>
+
+@if (Model.errorMessage.Length > 0)
+{
+<div class='alert alert-warming alert-dismissible fade show' role="alert">
+    <strong>@Model.errorMessage</strong>
+    <button type='button' class='btn-close' data-bs-dismiss='alert' arial-label='Close'></button>
+</div>
+}
+<form method="POST">
+    <div class="row mb-3">
+        <label class="col-sm-3 col-form-label" style="color:white; border-color:white;">Amount</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" name="amount" value="@Model.balanceInfo.Amount">
+        </div>
+    </div>
+
+    @if (Model.successMessage.Length > 0)
+    {
+    <div class='alert alert-warming alert-dismissible fade show' role="alert">
+        <strong>@Model.successMessage</strong>
+        <button type='button' class='btn-close' data-bs-dismiss='alert' arial-label='Close'></button>
+    </div>
+    }
+
+    <div class="row mb-3">
+        <div class="offset-sm-3 col-sm-3 d-grid">
+            <button type="submit" class="btn btn-primary" style="background-color:purple; border-color:purple;">Invest</button>
+        </div>
+        <div class="col-sm-3 d-grid">
+            <a class="btn btn-outline-primary" href="/Identity/Donates/MoneyIndex" role="button" style="background-color:orange; border-color:orange;">Cancel</a>
+        </div>
+    </div>
+</form>
