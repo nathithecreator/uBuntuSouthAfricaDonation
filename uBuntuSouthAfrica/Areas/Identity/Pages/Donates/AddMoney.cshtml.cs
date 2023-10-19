@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using uBuntuSouthAfrica.Pages.Donates;
 using System;
 using System.Data.SqlClient;
 
@@ -18,9 +17,9 @@ namespace uBuntuSouthAfrica.Pages.Donates
 
         public void OnPost()
         {
-            donateMoneyInfo.id = Request.Form["id"];
             donateMoneyInfo.donorName = Request.Form["name"];
             donateMoneyInfo.amount = Request.Form["amount"];
+            donateMoneyInfo.disasterName = Request.Form["disastername"];
 
             // Check if donorName is empty or null, and set it to anonymous if true
             if (string.IsNullOrEmpty(donateMoneyInfo.donorName))
@@ -34,39 +33,58 @@ namespace uBuntuSouthAfrica.Pages.Donates
                 return;
             }
 
-            // Save the new donation into the database
-            try
+            // Set up the SQL connection string
+            string connectionString = "Server=tcp:djpromorosebank1.database.windows.net,1433;Initial Catalog=DJPromoWebApp;Persist Security Info=False;User ID=djnathi;Password=Mamabolo777;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string connectionString = "Server=tcp:djpromorosebank1.database.windows.net,1433;Initial Catalog=DJPromoWebApp;Persist Security Info=False;User ID=djnathi;Password=Mamabolo777;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;";
-                SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(connectionString);
-                builder.TrustServerCertificate = true;
-                connectionString = builder.ConnectionString;
-                
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                connection.Open();
+                using (SqlTransaction transaction = connection.BeginTransaction())
                 {
-                    connection.Open();
-                    string sql = "INSERT INTO MoneyDonations (DonorName, Amount) VALUES (@donorName, @amount);";
-
-                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    try
                     {
-                        command.Parameters.AddWithValue("@donorName", donateMoneyInfo.donorName);
-                        command.Parameters.AddWithValue("@amount", donateMoneyInfo.amount);
+                        // Insert into "MoneyDonations" table
+                        string moneyDonationsSql = "INSERT INTO MoneyDonations (DisasterName, DonorName, Amount) VALUES (@donorDisaster, @donorName, @amount);";
+                        using (SqlCommand moneyDonationsCommand = new SqlCommand(moneyDonationsSql, connection, transaction))
+                        {
+                            moneyDonationsCommand.Parameters.AddWithValue("@donorDisaster", donateMoneyInfo.disasterName);
+                            moneyDonationsCommand.Parameters.AddWithValue("@donorName", donateMoneyInfo.donorName);
+                            moneyDonationsCommand.Parameters.AddWithValue("@amount", donateMoneyInfo.amount);
 
-                        command.ExecuteNonQuery();
+                            moneyDonationsCommand.ExecuteNonQuery();
+                        }
+
+                        // Insert into "Funds" table
+                        string fundsSql = "INSERT INTO Funds (DonorName, DisasterType, DisasterName, Amount) VALUES (@donorName, 'income', @donorDisaster, @amount);";
+                        using (SqlCommand fundsCommand = new SqlCommand(fundsSql, connection, transaction))
+                        {
+                            fundsCommand.Parameters.AddWithValue("@donorName", donateMoneyInfo.donorName);
+                            fundsCommand.Parameters.AddWithValue("@donorDisaster", donateMoneyInfo.disasterName);
+                            fundsCommand.Parameters.AddWithValue("@amount", donateMoneyInfo.amount);
+
+                            fundsCommand.ExecuteNonQuery();
+                        }
+
+                        // Commit the transaction if both insertions are successful
+                        transaction.Commit();
+
+                        // Clear the form fields
+                        donateMoneyInfo.donorName = "";
+                        donateMoneyInfo.amount = "";
+                        donateMoneyInfo.disasterName = "";
+
+                        successMessage = "New Donations Added Successfully";
+                    }
+                    catch (Exception ex)
+                    {
+                        // If there's an exception, roll back the transaction to ensure data consistency
+                        transaction.Rollback();
+                        errorMessage = ex.Message;
                     }
                 }
             }
-            catch (Exception ex)
-            {
-                errorMessage = ex.Message;
-                return;
-            }
 
-            donateMoneyInfo.donorName = "";
-            donateMoneyInfo.amount = "";
-           
-            successMessage = "New Donation Added Successfully";
-
+            // Redirect to the MoneyIndex page
             Response.Redirect("/Identity/Donates/MoneyIndex");
         }
     }
