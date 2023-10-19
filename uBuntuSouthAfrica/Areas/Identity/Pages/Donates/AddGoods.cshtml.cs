@@ -50,32 +50,43 @@ namespace uBuntuSouthAfrica.Pages.Donates
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    string sql = "INSERT INTO GoodsDonations (DonorName, Category, ItemDescription, NumberOfItems) VALUES (@donorName, @category, @itemDescription, @numOfItems);";
+                    string sql = "INSERT INTO GoodsDonations (DisasterName, DonorName, Category, ItemDescription, NumberOfItems, GoodsCost) " +
+                              "VALUES (@disasterName, @donorName, @category, @itemDescription, @numOfItems, @goodsCost);";
 
-                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    using (SqlCommand command = new SqlCommand(sql, connection, transaction))
                     {
+                        command.Parameters.AddWithValue("@disasterName", disasterName);
                         command.Parameters.AddWithValue("@donorName", donateGoodsInfo.DonorName);
-                        command.Parameters.AddWithValue("@category", selectedCategory); // Use selectedCategory
+                        command.Parameters.AddWithValue("@category", selectedCategory);
                         command.Parameters.AddWithValue("@itemDescription", donateGoodsInfo.ItemDescription);
                         command.Parameters.AddWithValue("@numOfItems", donateGoodsInfo.NumberOfItems);
+                        command.Parameters.AddWithValue("@goodsCost", goodsCost);
 
+                        // Execute the SQL command
                         command.ExecuteNonQuery();
                     }
+
+                    // Commit the transaction if the insertion is successful
+                    transaction.Commit();
+
+                    // Clear the form fields
+                    donateGoodsInfo.DisasterName = "";
+                    donateGoodsInfo.DonorName = "";
+                    donateGoodsInfo.ItemDescription = "";
+                    donateGoodsInfo.NumberOfItems = "";
+                    donateGoodsInfo.GoodsCost = "";
+                    donateGoodsInfo.Category = selectedCategory;
+                    successMessage = "New Donations Added Successfully";
                 }
             }
-            catch (Exception ex)
-            {
-                errorMessage = ex.Message;
-                return;
-            }
+    }
+    catch (Exception ex)
+    {
+        // If there's an exception, roll back the transaction to ensure data consistency
+        errorMessage = ex.Message;
+    }
 
-            donateGoodsInfo.DonorName = "";
-            donateGoodsInfo.ItemDescription = "";
-            donateGoodsInfo.NumberOfItems = "";
-            donateGoodsInfo.Category= selectedCategory;
-            successMessage = "New Donation Added Successfully";
-
-            Response.Redirect("/Identity/Donates/GoodsDonateIndex");
-        }
+    Response.Redirect("/Identity/Donates/GoodsDonateIndex");
+}
     }
 }

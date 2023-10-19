@@ -21,7 +21,7 @@ namespace uBuntuSouthAfrica.Pages.Donates
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    string sql = "SELECT ID, DonorName, NumberOfItems, Category, ItemDescription FROM GoodsDonations";
+                    string sql = "SELECT ID, DisasterName, DonorName, NumberOfItems, Category, ItemDescription GoodsCost FROM GoodsDonations";
 
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
@@ -31,10 +31,11 @@ namespace uBuntuSouthAfrica.Pages.Donates
                             {
                                 GoodsInfo goods = new GoodsInfo();
                                 goods.id = "" + reader.GetInt32(0).ToString();
-                                goods.DonorName = reader.GetString(1);
-                                goods.NumberOfItems = reader.GetInt32(2).ToString();
-                                goods.Category = reader.GetString(3);
-                                goods.ItemDescription = reader.GetString(4);
+                                goods.DisasterName = reader.GetString(1);
+                                goods.DonorName = reader.GetString(2);
+                                goods.NumberOfItems = reader.GetInt32(3).ToString();
+                                goods.Category = reader.GetString(4);
+                                goods.ItemDescription = reader.GetString(5);
 
                                 listDonate.Add(goods);
                             }
@@ -49,15 +50,17 @@ namespace uBuntuSouthAfrica.Pages.Donates
             }
         }
     }
-  
+
     public class GoodsInfo
     {
         public string id;
+        public string DisasterName;
         public string DonorName;
         public string date;
         public string NumberOfItems;
         public string Category;
         public string ItemDescription;
+        public string GoodsCost;
     }
 
 }

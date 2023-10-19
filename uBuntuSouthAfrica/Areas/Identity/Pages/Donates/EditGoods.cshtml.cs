@@ -33,14 +33,16 @@ namespace uBuntuSouthAfrica.Pages.Donates
                             if (reader.Read())
                             {
                                 GoodsInfo.id = "" + reader.GetInt32(0).ToString();
-                                GoodsInfo.DonorName = reader.GetString(1);
-                                GoodsInfo.date = reader.GetDateTime(2).ToString();
-                                GoodsInfo.NumberOfItems = "" + reader.GetInt32(3).ToString();
-                                GoodsInfo.Category = reader.GetString(4);
-                                GoodsInfo.ItemDescription = reader.GetString(5);
+                                GoodsInfo.DisasterName = reader.GetInt32(1).ToString();
+                                GoodsInfo.DonorName = reader.GetString(2);
+                                GoodsInfo.date = reader.GetDateTime(3).ToString();
+                                GoodsInfo.NumberOfItems = "" + reader.GetInt32(4).ToString();
+                                GoodsInfo.Category = reader.GetString(5);
+                                GoodsInfo.ItemDescription = reader.GetString(6);
+                                GoodsInfo.GoodsCost = reader.GetInt32(7).ToString();
 
-                                
-    }
+
+                            }
                         }
                     }
                 }
@@ -55,14 +57,16 @@ namespace uBuntuSouthAfrica.Pages.Donates
         public void OnPost()
         {
             GoodsInfo.id = Request.Query["id"];
+            GoodsInfo.DisasterName = Request.Form["disastername"];
             GoodsInfo.DonorName = Request.Form["name"];
             GoodsInfo.date = Request.Form["date"];
             GoodsInfo.NumberOfItems = Request.Form["numberOfItems"];
             GoodsInfo.Category = Request.Form["category"];
             GoodsInfo.ItemDescription = Request.Form["description"];
+            GoodsInfo.GoodsCost = Request.Form["goodscost"];
 
 
-            if (GoodsInfo.DonorName.Length == 0 ||
+            if (GoodsInfo.DonorName.Length == 0 || GoodsInfo.DisasterName.Length == 0 ||
                 GoodsInfo.Category.Length == 0 ||
                 GoodsInfo.ItemDescription.Length == 0)
             {
@@ -79,16 +83,18 @@ namespace uBuntuSouthAfrica.Pages.Donates
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    String sql = "UPDATE GoodsDonations SET DonorName=@donorName, NumberOfItems=@NumberOfItems, Category=@Category, ItemDescription=@ItemDescription, Date=GETDATE() WHERE ID=@id";
+                    String sql = "UPDATE GoodsDonations SET DisasterName=@DisasterName DonorName=@DonorName, NumberOfItems=@NumberOfItems, Category=@Category, ItemDescription=@ItemDescription,GoodsCost=@GoodsCost Date=GETDATE() WHERE ID=@id";
 
 
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
                         command.Parameters.AddWithValue("@id", GoodsInfo.id);
+                        command.Parameters.AddWithValue("@DisasterName", GoodsInfo.DisasterName);
                         command.Parameters.AddWithValue("@DonorName", GoodsInfo.DonorName);
                         command.Parameters.AddWithValue("@NumberOfItems", GoodsInfo.NumberOfItems);
                         command.Parameters.AddWithValue("@Category", GoodsInfo.Category);
                         command.Parameters.AddWithValue("@ItemDescription", GoodsInfo.ItemDescription);
+                        command.Parameters.AddWithValue("@GoodsCost", GoodsInfo.GoodsCost);
 
 
                         command.ExecuteNonQuery();
