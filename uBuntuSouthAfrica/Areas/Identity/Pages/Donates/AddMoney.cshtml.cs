@@ -13,25 +13,32 @@ namespace uBuntuSouthAfrica.Pages.Donates
 
         public void OnGet()
         {
-            // This method handles HTTP GET requests. You can add any initial logic you need here.
         }
 
-        public IActionResult OnPost()
+        public void OnPost()
         {
             donateMoneyInfo.donorName = Request.Form["name"];
-            donateMoneyInfo.amount = Request.Form["amount"];
+            decimal amount;
+
+            if (!decimal.TryParse(Request.Form["amount"], out amount))
+            {
+                errorMessage = "Invalid amount format. Please enter a valid number.";
+                return;
+            }
+
+            donateMoneyInfo.amount = amount;
             donateMoneyInfo.disasterName = Request.Form["disastername"];
 
-            // Check if donorName is empty or null, and set it to anonymous if true
+            // Check if donorName is empty or null, and set it to "Anonymous" if true
             if (string.IsNullOrEmpty(donateMoneyInfo.donorName))
             {
                 donateMoneyInfo.donorName = "Anonymous";
             }
 
-            if (string.IsNullOrEmpty(donateMoneyInfo.amount))
+            if (donateMoneyInfo.amount <= 0)
             {
-                errorMessage = "An amount is required";
-                return Page();
+                errorMessage = "The amount must be greater than zero.";
+                return;
             }
 
             // Set up the SQL connection string
@@ -71,23 +78,22 @@ namespace uBuntuSouthAfrica.Pages.Donates
 
                         // Clear the form fields
                         donateMoneyInfo.donorName = "";
-                        donateMoneyInfo.amount = "";
+                        donateMoneyInfo.amount = 0; // Reset amount
                         donateMoneyInfo.disasterName = "";
 
                         successMessage = "New Donations Added Successfully";
-
-                        // Redirect to the MoneyIndex page
-                        return RedirectToPage("/Identity/Donates/MoneyIndex");
                     }
                     catch (Exception ex)
                     {
                         // If there's an exception, roll back the transaction to ensure data consistency
                         transaction.Rollback();
                         errorMessage = ex.Message;
-                        return Page();
                     }
                 }
             }
+
+            // Redirect to the MoneyIndex page
+            Response.Redirect("/Identity/Donates/MoneyIndex");
         }
     }
 }

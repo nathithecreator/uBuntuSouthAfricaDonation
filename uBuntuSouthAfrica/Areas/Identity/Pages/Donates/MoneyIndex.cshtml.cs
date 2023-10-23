@@ -32,10 +32,10 @@ namespace uBuntuSouthAfrica.Pages.Donates
                             while (reader.Read())
                             {
                                 DonateMoneyInfo donatemoney = new DonateMoneyInfo();
-                                donatemoney.ID = reader.GetInt32(0);
+                                donatemoney.id = reader.GetInt32(0); // Use GetInt32 for the ID
                                 donatemoney.donorName = reader.GetString(1);
                                 donatemoney.disasterName = reader.GetString(2);
-                                donatemoney.amount = reader.GetDecimal(3);
+                                donatemoney.amount = reader.GetDecimal(3); // Use GetDecimal for the Amount
 
                                 listDonate.Add(donatemoney);
                             }
@@ -52,10 +52,10 @@ namespace uBuntuSouthAfrica.Pages.Donates
 
     public class DonateMoneyInfo
     {
-        public string id;
+        public int id; // Change id to int
         public string donorName;
         public string disasterName;
         public string date;
-        public string amount;
+        public decimal amount; // Change amount to decimal
     }
 }
