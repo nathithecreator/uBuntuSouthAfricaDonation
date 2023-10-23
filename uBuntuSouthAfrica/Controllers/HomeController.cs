@@ -26,7 +26,7 @@ namespace uBuntuSouthAfrica.Controllers
             decimal netAmount = 0; // Initialize netAmount to 0
 
             // Connect to your database and execute the SQL query to get NetAmount
-            using (SqlConnection connection = new SqlConnection("YourConnectionStringHere"))
+            using (SqlConnection connection = new SqlConnection("Server=tcp:djpromorosebank1.database.windows.net,1433;Initial Catalog=DJPromoWebApp;Persist Security Info=False;User ID=djnathi;Password=Mamabolo777;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;"))
             {
                 connection.Open();
                 string sql = "SELECT SUM(CASE WHEN MoneyType = 'income' THEN Amount ELSE 0 END) - SUM(CASE WHEN MoneyType = 'expense' THEN Amount ELSE 0 END) AS NetAmount FROM Funds";
