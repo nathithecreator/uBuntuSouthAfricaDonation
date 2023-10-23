@@ -18,15 +18,8 @@ namespace uBuntuSouthAfrica.Pages.Donates
         public void OnPost()
         {
             donateMoneyInfo.donorName = Request.Form["name"];
-            decimal amount;
-
-            if (!decimal.TryParse(Request.Form["amount"], out amount))
-            {
-                errorMessage = "Invalid amount format. Please enter a valid number.";
-                return;
-            }
-
-            donateMoneyInfo.amount = amount;
+   
+            donateMoneyInfo.amount = Request.Form["amount"]; ;
             donateMoneyInfo.disasterName = Request.Form["disastername"];
 
             // Check if donorName is empty or null, and set it to "Anonymous" if true
@@ -35,11 +28,7 @@ namespace uBuntuSouthAfrica.Pages.Donates
                 donateMoneyInfo.donorName = "Anonymous";
             }
 
-            if (donateMoneyInfo.amount <= 0)
-            {
-                errorMessage = "The amount must be greater than zero.";
-                return;
-            }
+           
 
             // Set up the SQL connection string
             string connectionString = "Server=tcp:djpromorosebank1.database.windows.net,1433;Initial Catalog=DJPromoWebApp;Persist Security Info=False;User ID=djnathi;Password=Mamabolo777;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;";
@@ -78,7 +67,7 @@ namespace uBuntuSouthAfrica.Pages.Donates
 
                         // Clear the form fields
                         donateMoneyInfo.donorName = "";
-                        donateMoneyInfo.amount = 0; // Reset amount
+                        donateMoneyInfo.amount = ""; // Reset amount
                         donateMoneyInfo.disasterName = "";
 
                         successMessage = "New Donations Added Successfully";
