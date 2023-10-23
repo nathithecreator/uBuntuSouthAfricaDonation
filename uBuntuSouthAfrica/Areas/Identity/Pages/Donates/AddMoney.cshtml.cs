@@ -13,9 +13,10 @@ namespace uBuntuSouthAfrica.Pages.Donates
 
         public void OnGet()
         {
+            // This method handles HTTP GET requests. You can add any initial logic you need here.
         }
 
-        public void OnPost()
+        public IActionResult OnPost()
         {
             donateMoneyInfo.donorName = Request.Form["name"];
             donateMoneyInfo.amount = Request.Form["amount"];
@@ -30,7 +31,7 @@ namespace uBuntuSouthAfrica.Pages.Donates
             if (string.IsNullOrEmpty(donateMoneyInfo.amount))
             {
                 errorMessage = "An amount is required";
-                return;
+                return Page();
             }
 
             // Set up the SQL connection string
@@ -74,18 +75,19 @@ namespace uBuntuSouthAfrica.Pages.Donates
                         donateMoneyInfo.disasterName = "";
 
                         successMessage = "New Donations Added Successfully";
+
+                        // Redirect to the MoneyIndex page
+                        return RedirectToPage("/Identity/Donates/MoneyIndex");
                     }
                     catch (Exception ex)
                     {
                         // If there's an exception, roll back the transaction to ensure data consistency
                         transaction.Rollback();
                         errorMessage = ex.Message;
+                        return Page();
                     }
                 }
             }
-
-            // Redirect to the MoneyIndex page
-            Response.Redirect("/Identity/Donates/MoneyIndex");
         }
     }
 }
