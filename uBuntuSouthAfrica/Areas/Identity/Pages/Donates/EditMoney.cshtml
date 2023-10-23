@@ -39,9 +39,10 @@
     <div class="row mb-3">
         <label class="col-sm-3 col-form-label" style="color:white; border-color:white;"> Amount</label>
         <div class="col-sm-6">
-            <input type="text" class="form-control" name="amount" value="@Model.donateMoneyInfo.amount">
+           <input type="number" step="0.01" class="form-control" name="amount" value="@Model.donateMoneyInfo.amount">
         </div>
     </div>
+
 
     @if (Model.successMessage.Length > 0)
     {

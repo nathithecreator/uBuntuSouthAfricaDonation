@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Data.SqlClient;
 
@@ -28,16 +29,16 @@ namespace uBuntuSouthAfrica.Pages.Donates
                     String sql = "SELECT * FROM MoneyDonations WHERE id=@id";
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
-                        command.Parameters.AddWithValue("id", id);
+                        command.Parameters.AddWithValue("@id", int.Parse(id)); // Parse id to int
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
                             if (reader.Read())
                             {
-                                donateMoneyInfo.id = "" + reader.GetInt32(0).ToString();
+                                donateMoneyInfo.id = reader.GetInt32(0).ToString();
                                 donateMoneyInfo.donorName = reader.GetString(1);
-                                donateMoneyInfo.disasterName = reader.GetString(2); // Add this line for DisasterName
-                                donateMoneyInfo.date = reader.GetDateTime(3).ToString(); // Adjust index for Date
-                                donateMoneyInfo.amount = "" + reader.GetDecimal(4).ToString(); // Adjust index for Amount
+                                donateMoneyInfo.disasterName = reader.GetString(2);
+                                donateMoneyInfo.date = reader.GetDateTime(3).ToString();
+                                donateMoneyInfo.amount = reader.GetDecimal(4).ToString(); // Convert decimal to string
                             }
                         }
                     }
@@ -51,12 +52,12 @@ namespace uBuntuSouthAfrica.Pages.Donates
 
         public void OnPost()
         {
-            donateMoneyInfo.id = Request.Query["id"];
+            donateMoneyInfo.id = Request.Form["id"];
             donateMoneyInfo.donorName = Request.Form["name"];
-            donateMoneyInfo.disasterName = Request.Form["disasterName"]; // Add this line for DisasterName
+            donateMoneyInfo.disasterName = Request.Form["disasterName"];
             donateMoneyInfo.amount = Request.Form["amount"];
 
-            if (donateMoneyInfo.donorName.Length == 0 || donateMoneyInfo.disasterName.Length == 0 || donateMoneyInfo.amount.Length == 0)
+            if (string.IsNullOrEmpty(donateMoneyInfo.donorName) || string.IsNullOrEmpty(donateMoneyInfo.disasterName) || string.IsNullOrEmpty(donateMoneyInfo.amount))
             {
                 errorMessage = "All fields are required";
                 return;
@@ -75,10 +76,10 @@ namespace uBuntuSouthAfrica.Pages.Donates
 
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
-                        command.Parameters.AddWithValue("@id", donateMoneyInfo.id);
+                        command.Parameters.AddWithValue("@id", (donateMoneyInfo.id)); 
                         command.Parameters.AddWithValue("@donorName", donateMoneyInfo.donorName);
-                        command.Parameters.AddWithValue("@disasterName", donateMoneyInfo.disasterName); // Add this line for DisasterName
-                        command.Parameters.AddWithValue("@amount", donateMoneyInfo.amount);
+                        command.Parameters.AddWithValue("@disasterName", donateMoneyInfo.disasterName);
+                        command.Parameters.AddWithValue("@amount", decimal.Parse(donateMoneyInfo.amount)); // Parse amount to decimal
 
                         command.ExecuteNonQuery();
                     }
