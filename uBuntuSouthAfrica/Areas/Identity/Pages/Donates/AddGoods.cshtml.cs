@@ -65,8 +65,6 @@ namespace uBuntuSouthAfrica.Pages.Donates
                         command.Parameters.AddWithValue("@category", selectedCategory);
                         command.Parameters.AddWithValue("@itemDescription", donateGoodsInfo.ItemDescription);
                         command.Parameters.AddWithValue("@numOfItems", donateGoodsInfo.NumberOfItems);
-
-                        // You forgot to add the GoodsCost parameter, so I added it
                         command.Parameters.AddWithValue("@goodsCost", donateGoodsInfo.GoodsCost);
 
                         // Execute the SQL command
@@ -87,7 +85,7 @@ namespace uBuntuSouthAfrica.Pages.Donates
             }
             catch (Exception ex)
             {
-                // If there's an exception, handle it (you can log it) but no need to rollback a non-existent transaction.
+                // If there's an exception, handle it but no need to rollback a non-existent transaction.
                 errorMessage = ex.Message;
             }
 
