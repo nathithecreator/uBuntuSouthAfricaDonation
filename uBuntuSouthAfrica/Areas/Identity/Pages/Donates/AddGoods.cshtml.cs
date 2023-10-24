@@ -14,16 +14,22 @@ namespace uBuntuSouthAfrica.Pages.Donates
 
         public void OnGet()
         {
+            if (Request.Query.ContainsKey("disasterName"))
+            {
+                donateGoodsInfo.disasterName = Request.Query["disasterName"];
+            }
         }
 
         public void OnPost()
         {
             donateGoodsInfo.id = Request.Form["id"];
+            donateGoodsInfo.DisasterName = Request.Form["disastername"]
             donateGoodsInfo.DonorName = Request.Form["name"];
             string category = Request.Form["category"];
             string otherCategory = Request.Form["othercategory"];
             donateGoodsInfo.ItemDescription = Request.Form["description"];
             donateGoodsInfo.NumberOfItems = Request.Form["numberOfItems"];
+            donateGoodsInfo.GoodsCost = Request.Form["goodscost"];
 
             if (string.IsNullOrEmpty(donateGoodsInfo.DonorName))
             {
