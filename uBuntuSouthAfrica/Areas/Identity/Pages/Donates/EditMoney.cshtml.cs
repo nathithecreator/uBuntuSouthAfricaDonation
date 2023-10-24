@@ -79,7 +79,7 @@ namespace uBuntuSouthAfrica.Pages.Donates
                         command.Parameters.AddWithValue("@id", (donateMoneyInfo.id)); 
                         command.Parameters.AddWithValue("@donorName", donateMoneyInfo.donorName);
                         command.Parameters.AddWithValue("@disasterName", donateMoneyInfo.disasterName);
-                        command.Parameters.AddWithValue("@amount", decimal.Parse(donateMoneyInfo.amount)); // Parse amount to decimal
+                        command.Parameters.AddWithValue("@amount", donateMoneyInfo.amount); // Parse amount to decimal
 
                         command.ExecuteNonQuery();
                     }
