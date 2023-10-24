@@ -12,7 +12,6 @@ namespace uBuntuSouthAfrica.Areas.Identity.Pages.Donates
             try
             {
                 string connectionString = "Server=tcp:djpromorosebank1.database.windows.net,1433;Initial Catalog=DJPromoWebApp;Persist Security Info=False;User ID=djnathi;Password=Mamabolo777;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;";
-
                 SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(connectionString);
                 builder.TrustServerCertificate = true;
                 connectionString = builder.ConnectionString;
@@ -21,7 +20,7 @@ namespace uBuntuSouthAfrica.Areas.Identity.Pages.Donates
                 {
                     connection.Open();
                     string sql = "SELECT ID, DonorName, DisasterType, DisasterName, Amount, MoneyType FROM Funds";
-
+                                        
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
                         using (SqlDataReader reader = command.ExecuteReader())
@@ -33,7 +32,7 @@ namespace uBuntuSouthAfrica.Areas.Identity.Pages.Donates
                                 funds.DonorName = reader.GetString(1);
                                 funds.DisasterType = reader.GetString(2);
                                 funds.DisasterName = reader.GetString(3);
-                                funds.Amount = reader.GetString(4);
+                                funds.Amount = reader.GetDecimal(4); ;
                                 funds.MoneyType = reader.GetString(5);
 
                                 listBalance.Add(funds);
@@ -55,7 +54,7 @@ namespace uBuntuSouthAfrica.Areas.Identity.Pages.Donates
         public string DonorName;
         public string DisasterType;
         public string DisasterName;
-        public string Amount;  
+        public decimal Amount;  // Use a numeric data type like decimal 
         public string MoneyType;
     }
 
