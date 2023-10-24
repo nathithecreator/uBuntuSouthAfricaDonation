@@ -32,7 +32,7 @@ namespace uBuntuSouthAfrica.Areas.Identity.Pages.Donates
                                 funds.DonorName = reader.GetString(1);
                                 funds.DisasterType = reader.GetString(2);
                                 funds.DisasterName = reader.GetString(3);
-                                funds.Amount = reader.GetDecimal(4); ;
+                                funds.Amount = reader.GetString(4); ;
                                 funds.MoneyType = reader.GetString(5);
 
                                 listBalance.Add(funds);
@@ -54,7 +54,7 @@ namespace uBuntuSouthAfrica.Areas.Identity.Pages.Donates
         public string DonorName;
         public string DisasterType;
         public string DisasterName;
-        public decimal Amount;  // Use a numeric data type like decimal 
+        public string Amount;  // Use a numeric data type like decimal 
         public string MoneyType;
     }
 
