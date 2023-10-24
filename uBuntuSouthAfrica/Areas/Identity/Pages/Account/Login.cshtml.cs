@@ -104,7 +104,7 @@ namespace uBuntuSouthAfrica.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl ??= Url.Content("/Identity/Donates/MoneyIndex");
+            returnUrl ??= Url.Content("/Identity/Donates/DisasterIndex");
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
