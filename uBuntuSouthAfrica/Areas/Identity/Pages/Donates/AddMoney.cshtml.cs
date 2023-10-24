@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.DotNet.Scaffolding.Shared.Project;
 using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 
 namespace uBuntuSouthAfrica.Pages.Donates
@@ -69,7 +71,7 @@ namespace uBuntuSouthAfrica.Pages.Donates
                         }
 
                         // Insert into "Funds" table
-                        string fundsSql = "INSERT INTO Funds (DonorName, DisasterType, DisasterName, Amount) VALUES (@donorName, 'income', @donorDisaster, @amount);";
+                        string fundsSql = "INSERT INTO Funds (DonorName, DisasterType, DisasterName, Amount, MoneyType) VALUES (@donorName, 'expense' , @donorDisaster, @amount, 'expense');";
                         using (SqlCommand fundsCommand = new SqlCommand(fundsSql, connection, transaction))
                         {
                             fundsCommand.Parameters.AddWithValue("@donorName", donateMoneyInfo.donorName);
