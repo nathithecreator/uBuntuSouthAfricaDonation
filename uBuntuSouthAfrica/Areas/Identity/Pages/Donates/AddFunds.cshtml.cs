@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System;
 using System.Data.SqlClient;
-using uBuntuSouthAfrica.Pages.Donates;
 
 namespace uBuntuSouthAfrica.Areas.Identity.Pages.Donates
 {
@@ -17,13 +17,14 @@ namespace uBuntuSouthAfrica.Areas.Identity.Pages.Donates
 
         public void OnPost()
         {
-
-            balanceInfo.Amount = Request.Form["amount"];
-
-
-            if (string.IsNullOrEmpty(balanceInfo.Amount))
+            // Parse the input amount as a decimal
+            if (decimal.TryParse(Request.Form["amount"], out decimal parsedAmount))
             {
-                errorMessage = "An amount is required";
+                balanceInfo.Amount = parsedAmount;
+            }
+            else
+            {
+                errorMessage = "Invalid amount format";
                 return;
             }
 
@@ -40,7 +41,6 @@ namespace uBuntuSouthAfrica.Areas.Identity.Pages.Donates
                     connection.Open();
                     string sql = "INSERT INTO Funds (DonorName, DisasterType, DisasterName, Amount, MoneyType) VALUES ('income', 'income','income', @amount, 'income');";
 
-
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
                         command.Parameters.AddWithValue("@amount", balanceInfo.Amount);
@@ -54,8 +54,7 @@ namespace uBuntuSouthAfrica.Areas.Identity.Pages.Donates
                 return;
             }
 
-
-            balanceInfo.Amount = "";
+            balanceInfo.Amount = 0; // Reset to 0 if needed
 
             successMessage = "New Donation Added Successfully";
 
