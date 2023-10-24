@@ -40,11 +40,11 @@
             <td>
                 @if (item.DonationType == "Money")
                     {
-                <a class="btn btn-primary btn-sm" href="/Identity/Donates/AddMoney?id=@item.id" style="background-color: mediumorchid; border-color: mediumorchid;">Donate</a>
+                        <a class="btn btn-primary btn-sm" href="/Identity/Donates/AddMoney?id=@item.id&disasterName=@item.DisasterName" style="background-color: mediumorchid; border-color: mediumorchid;">Donate</a>
                     }
                     else if (item.DonationType == "Goods")
                     {
-                <a class="btn btn-primary btn-sm" href="/Identity/Donates/AddGoods?id=@item.id" style="background-color: mediumorchid; border-color: mediumorchid;">Donate</a>
+                        <a class="btn btn-primary btn-sm" href="/Identity/Donates/AddGoods?id=@item.id&disasterName=@item.DisasterName" style="background-color: mediumorchid; border-color: mediumorchid;">Donate</a>
                     }
             </td>
         </tr>
