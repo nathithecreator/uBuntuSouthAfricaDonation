@@ -29,7 +29,7 @@ namespace uBuntuSouthAfrica.Pages.Donates
                     String sql = "SELECT * FROM MoneyDonations WHERE id=@id";
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
-                        command.Parameters.AddWithValue("@id", int.Parse(id)); // Parse id to int
+                        command.Parameters.AddWithValue("@id", id); 
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
                             if (reader.Read())
