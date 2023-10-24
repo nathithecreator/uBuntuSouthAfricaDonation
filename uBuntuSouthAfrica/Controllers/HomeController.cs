@@ -23,7 +23,7 @@ namespace uBuntuSouthAfrica.Controllers
         {
             ViewData["UserID"] = _userManager.GetUserId(this.User);
 
-            decimal netAmount = 0; // Initialize netAmount to 0
+            int netAmount = 0; // Initialize netAmount to 0
 
             // Connect to your database and execute the SQL query to get NetAmount
             using (SqlConnection connection = new SqlConnection("Server=tcp:djpromorosebank1.database.windows.net,1433;Initial Catalog=DJPromoWebApp;Persist Security Info=False;User ID=djnathi;Password=Mamabolo777;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;"))
@@ -40,7 +40,7 @@ namespace uBuntuSouthAfrica.Controllers
                             // Read the NetAmount value from the result
                             if (!reader.IsDBNull(0))
                             {
-                                netAmount = (int)reader.GetDecimal(0);
+                                netAmount = (int)reader.GetInt32(0);
                             }
                         }
                     }
