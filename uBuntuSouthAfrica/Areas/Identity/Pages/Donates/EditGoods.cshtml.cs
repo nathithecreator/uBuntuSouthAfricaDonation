@@ -39,7 +39,7 @@ namespace uBuntuSouthAfrica.Pages.Donates
                                 GoodsInfo.NumberOfItems = "" + reader.GetInt32(4).ToString();
                                 GoodsInfo.Category = reader.GetString(5);
                                 GoodsInfo.ItemDescription = reader.GetString(6);
-                                GoodsInfo.GoodsCost = reader.GetInt32(7).ToString();
+                                GoodsInfo.GoodsCost = reader.GetInt32(7);
 
 
                             }
@@ -63,7 +63,7 @@ namespace uBuntuSouthAfrica.Pages.Donates
             GoodsInfo.NumberOfItems = Request.Form["numberOfItems"];
             GoodsInfo.Category = Request.Form["category"];
             GoodsInfo.ItemDescription = Request.Form["description"];
-            GoodsInfo.GoodsCost = Request.Form["goodscost"];
+            GoodsInfo.GoodsCost = int.Parse(Request.Form["goodscost"]);
 
 
             if (GoodsInfo.DonorName.Length == 0 || GoodsInfo.DisasterName.Length == 0 ||
