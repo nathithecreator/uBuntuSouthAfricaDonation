@@ -25,7 +25,6 @@ namespace uBuntuSouthAfrica.Pages.Donates
             }
         }
 
-
         public void OnPost()
         {
             donateGoodsInfo.id = Request.Form["id"];
@@ -35,7 +34,7 @@ namespace uBuntuSouthAfrica.Pages.Donates
             string otherCategory = Request.Form["othercategory"];
             donateGoodsInfo.ItemDescription = Request.Form["description"];
             donateGoodsInfo.NumberOfItems = Request.Form["numberOfItems"];
-            donateGoodsInfo.GoodsCost = Request.Form["goodscost"];
+            donateGoodsInfo.GoodsCost = int.Parse(Request.Form["goodscost"]);
 
             if (string.IsNullOrEmpty(donateGoodsInfo.DonorName))
             {
@@ -65,33 +64,27 @@ namespace uBuntuSouthAfrica.Pages.Donates
 
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
-                        // You forgot to start a transaction here, so I removed transaction from the SqlCommand constructor.
-                        command.Parameters.AddWithValue("@disasterName", donateGoodsInfo.DisasterName); // Add disaster name
+                        command.Parameters.AddWithValue("@disasterName", donateGoodsInfo.DisasterName);
                         command.Parameters.AddWithValue("@donorName", donateGoodsInfo.DonorName);
                         command.Parameters.AddWithValue("@category", selectedCategory);
                         command.Parameters.AddWithValue("@itemDescription", donateGoodsInfo.ItemDescription);
                         command.Parameters.AddWithValue("@numOfItems", donateGoodsInfo.NumberOfItems);
                         command.Parameters.AddWithValue("@goodsCost", donateGoodsInfo.GoodsCost);
 
-                        // Execute the SQL command
                         command.ExecuteNonQuery();
                     }
 
-                    // No transaction rollback is needed since we didn't start a transaction.
-
-                    // Clear the form fields
                     donateGoodsInfo.DisasterName = "";
                     donateGoodsInfo.DonorName = "";
                     donateGoodsInfo.ItemDescription = "";
                     donateGoodsInfo.NumberOfItems = "";
-                    donateGoodsInfo.GoodsCost = "";
+                    donateGoodsInfo.GoodsCost = 0;
                     donateGoodsInfo.Category = selectedCategory;
                     successMessage = "New Donations Added Successfully";
                 }
             }
             catch (Exception ex)
             {
-                // If there's an exception, handle it but no need to rollback a non-existent transaction.
                 errorMessage = ex.Message;
             }
 

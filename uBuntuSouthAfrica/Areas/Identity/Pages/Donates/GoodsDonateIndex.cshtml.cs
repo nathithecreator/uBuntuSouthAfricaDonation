@@ -60,7 +60,7 @@ namespace uBuntuSouthAfrica.Pages.Donates
         public string NumberOfItems;
         public string Category;
         public string ItemDescription;
-        public string GoodsCost;
+        public int GoodsCost;
     }
 
 }
