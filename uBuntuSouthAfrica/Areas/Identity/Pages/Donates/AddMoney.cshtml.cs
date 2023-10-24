@@ -13,7 +13,12 @@ namespace uBuntuSouthAfrica.Pages.Donates
 
         public void OnGet()
         {
+            if (Request.Query.ContainsKey("disasterName"))
+            {
+                donateMoneyInfo.disasterName = Request.Query["disasterName"];
+            }
         }
+
 
         public void OnPost()
         {
