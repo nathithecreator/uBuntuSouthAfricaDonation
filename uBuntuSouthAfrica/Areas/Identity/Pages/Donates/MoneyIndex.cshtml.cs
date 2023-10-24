@@ -35,7 +35,7 @@ namespace uBuntuSouthAfrica.Pages.Donates
                                 donatemoney.id = reader.GetInt32(0).ToString(); // Use GetInt32 for the ID
                                 donatemoney.donorName = reader.GetString(1);
                                 donatemoney.disasterName = reader.GetString(2);
-                                donatemoney.amount = reader.GetDecimal(3).ToString(); // Use GetDecimal for the Amount
+                                donatemoney.amount = reader.GetDecimal(3); // Use GetDecimal for the Amount
 
                                 listDonate.Add(donatemoney);
                             }
@@ -56,6 +56,6 @@ namespace uBuntuSouthAfrica.Pages.Donates
         public string donorName;
         public string disasterName;
         public string date;
-        public string amount; 
+        public decimal amount; 
     }
 }

@@ -14,11 +14,11 @@ namespace uBuntuSouthAfrica.Pages.Donates
 
         public void OnGet()
         {
-            String id = Request.Query["id"];
+            string id = Request.Query["id"];
 
             try
             {
-                String connectionString = "Server=tcp:djpromorosebank1.database.windows.net,1433;Initial Catalog=DJPromoWebApp;Persist Security Info=False;User ID=djnathi;Password=Mamabolo777;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;";
+                string connectionString = "Server=tcp:djpromorosebank1.database.windows.net,1433;Initial Catalog=DJPromoWebApp;Persist Security Info=False;User ID=djnathi;Password=Mamabolo777;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;";
                 SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(connectionString);
                 builder.TrustServerCertificate = true;
                 connectionString = builder.ConnectionString;
@@ -26,10 +26,10 @@ namespace uBuntuSouthAfrica.Pages.Donates
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    String sql = "SELECT * FROM MoneyDonations WHERE id=@id";
+                    string sql = "SELECT * FROM MoneyDonations WHERE id=@id";
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
-                        command.Parameters.AddWithValue("@id", id); 
+                        command.Parameters.AddWithValue("@id", id);
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
                             if (reader.Read())
@@ -38,7 +38,7 @@ namespace uBuntuSouthAfrica.Pages.Donates
                                 donateMoneyInfo.donorName = reader.GetString(1);
                                 donateMoneyInfo.disasterName = reader.GetString(2);
                                 donateMoneyInfo.date = reader.GetDateTime(3).ToString();
-                                donateMoneyInfo.amount = reader.GetDecimal(4).ToString(); // Convert decimal to string
+                                donateMoneyInfo.amount = reader.GetDecimal(4); // Convert decimal to string
                             }
                         }
                     }
@@ -55,9 +55,18 @@ namespace uBuntuSouthAfrica.Pages.Donates
             donateMoneyInfo.id = Request.Form["id"];
             donateMoneyInfo.donorName = Request.Form["name"];
             donateMoneyInfo.disasterName = Request.Form["disasterName"];
-            donateMoneyInfo.amount = Request.Form["amount"];
+            // Parse the input amount as a decimal
+            if (decimal.TryParse(Request.Form["amount"], out decimal parsedAmount))
+            {
+                donateMoneyInfo.amount = parsedAmount;
+            }
+            else
+            {
+                errorMessage = "Invalid amount format";
+                return;
+            }
 
-            if (string.IsNullOrEmpty(donateMoneyInfo.donorName) || string.IsNullOrEmpty(donateMoneyInfo.disasterName) || string.IsNullOrEmpty(donateMoneyInfo.amount))
+            if (string.IsNullOrEmpty(donateMoneyInfo.donorName) || string.IsNullOrEmpty(donateMoneyInfo.disasterName))
             {
                 errorMessage = "All fields are required";
                 return;
@@ -65,18 +74,18 @@ namespace uBuntuSouthAfrica.Pages.Donates
 
             try
             {
-                String connectionString = "Server=tcp:djpromorosebank1.database.windows.net,1433;Initial Catalog=DJPromoWebApp;Persist Security Info=False;User ID=djnathi;Password=Mamabolo777;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;";
+                string connectionString = "Server=tcp:djpromorosebank1.database.windows.net,1433;Initial Catalog=DJPromoWebApp;Persist Security Info=False;User ID=djnathi;Password=Mamabolo777;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;";
                 SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(connectionString);
                 builder.TrustServerCertificate = true;
                 connectionString = builder.ConnectionString;
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    String sql = "UPDATE MoneyDonations SET DonorName=@donorName, DisasterName=@disasterName, Amount=@amount WHERE ID=@id";
+                    string sql = "UPDATE MoneyDonations SET DonorName=@donorName, DisasterName=@disasterName, Amount=@amount WHERE ID=@id";
 
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
-                        command.Parameters.AddWithValue("@id", (donateMoneyInfo.id)); 
+                        command.Parameters.AddWithValue("@id", donateMoneyInfo.id);
                         command.Parameters.AddWithValue("@donorName", donateMoneyInfo.donorName);
                         command.Parameters.AddWithValue("@disasterName", donateMoneyInfo.disasterName);
                         command.Parameters.AddWithValue("@amount", donateMoneyInfo.amount); // Parse amount to decimal
@@ -94,4 +103,5 @@ namespace uBuntuSouthAfrica.Pages.Donates
             Response.Redirect("/Identity/Donates/MoneyIndex");
         }
     }
+
 }
