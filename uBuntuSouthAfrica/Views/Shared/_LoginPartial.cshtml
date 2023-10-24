@@ -8,7 +8,8 @@
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
-       
+
+        <a class="nav-link text-dark" href="/Identity/Donates/AvailableFunds">Funds</a>
         <a class="nav-link text-dark" href="/Identity/Donates/MoneyIndex">Money</a>
         <a class="nav-link text-dark" href="/Identity/Donates/GoodsDonateIndex">Goods</a>
         <a class="nav-link text-dark" href="/Identity/Donates/DisasterIndex">Disaster</a>
