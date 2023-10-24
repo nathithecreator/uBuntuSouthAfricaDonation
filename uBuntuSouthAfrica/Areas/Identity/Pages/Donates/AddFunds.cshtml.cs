@@ -59,7 +59,7 @@ namespace uBuntuSouthAfrica.Areas.Identity.Pages.Donates
 
             successMessage = "New Donation Added Successfully";
 
-            Response.Redirect("/Identity/Donates/MoneyIndex");
+            Response.Redirect("/Identity/Donates/AvailableFunds");
         }
     }
 }
