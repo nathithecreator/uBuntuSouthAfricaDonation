@@ -6,7 +6,7 @@ namespace uBuntuSouthAfrica.Areas.Identity.Pages.Donates
 {
     public class AvailableFundsModel : PageModel
     {
-        public List<BalanceInfo> listDonate = new List<BalanceInfo>();
+        public List<BalanceInfo> listBalance = new List<BalanceInfo>();
         public void OnGet()
         {
             try
@@ -36,7 +36,7 @@ namespace uBuntuSouthAfrica.Areas.Identity.Pages.Donates
                                 funds.Amount = reader.GetString(4);
                                 funds.MoneyType = reader.GetString(5);
 
-                                listDonate.Add(funds);
+                                listBalance.Add(funds);
                             }
                         }
                     }
@@ -55,7 +55,8 @@ namespace uBuntuSouthAfrica.Areas.Identity.Pages.Donates
         public string DonorName;
         public string DisasterType;
         public string DisasterName;
-        public string Amount;
+        public string Amount;  
         public string MoneyType;
     }
+
 }

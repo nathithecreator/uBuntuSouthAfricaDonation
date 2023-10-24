@@ -14,7 +14,7 @@
 
 <br>
 <h2 style="text-align: center; font-weight:bold; color:purple;">Available Balance</h2>
-<p>Net Amount: @ViewBag.NetAmount</p>
+<p style="font-weight:bold; color:white;">Net Amount: @ViewBag.NetAmount</p>
 <a class='btn  btn-sm' href="/Identity/Donates/AddFunds" style='background-color: orange; border-color: orange;'>Add Money to Wallet</a>
 
 <table class="table" style="background-color: white;">
@@ -22,17 +22,17 @@
         <tr>
             <th>Donor Name</th>
             <th>Disaster Type</th>
-            <th>Disaster Name</th>
+            <th>Money Type</th>
             <th>Amount</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.listDonate)
+        @foreach (var item in Model.listBalance)
         {
         <tr>
             <td>@item.DonorName</td>
             <td>@item.DisasterType</td>
-            <td>@item.DisasterName</td>
+            <td>@item.MoneyType</td>
             <td>@item.Amount</td>
         </tr>
         }
