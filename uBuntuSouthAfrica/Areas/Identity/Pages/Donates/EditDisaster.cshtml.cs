@@ -6,6 +6,8 @@ namespace uBuntuSouthAfrica.Pages.Donates
 {
     public class EditDisasterModel : PageModel
     {
+        public int NetAmount { get; set; } // Add the NetAmount property here
+
         public DisasterInfo disasterInfo = new DisasterInfo();
         public string errorMessage = "";
         public string successMessage = "";

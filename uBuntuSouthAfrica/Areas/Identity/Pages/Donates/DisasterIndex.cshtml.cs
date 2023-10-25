@@ -10,6 +10,9 @@ namespace uBuntuSouthAfrica.Pages.Donates
     public class DisasterIndexModel : PageModel
     {
         public List<DisasterInfo> listDonate = new List<DisasterInfo>();
+
+        public int NetAmount { get; set; } // Add the NetAmount property here
+
         public void OnGet()
         {
             try
