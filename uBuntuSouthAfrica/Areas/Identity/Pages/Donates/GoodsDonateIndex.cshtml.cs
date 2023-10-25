@@ -21,7 +21,7 @@ namespace uBuntuSouthAfrica.Pages.Donates
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    string sql = "SELECT ID, DisasterName, DonorName, NumberOfItems, Category, ItemDescription GoodsCost FROM GoodsDonations";
+                    string sql = "SELECT ID, DisasterName, DonorName, NumberOfItems, Category, ItemDescription, GoodsCost FROM GoodsDonations";
 
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
@@ -36,6 +36,7 @@ namespace uBuntuSouthAfrica.Pages.Donates
                                 goods.NumberOfItems = reader.GetInt32(3).ToString();
                                 goods.Category = reader.GetString(4);
                                 goods.ItemDescription = reader.GetString(5);
+                                goods.GoodsCost = reader.GetInt32(6);
 
                                 listDonate.Add(goods);
                             }
