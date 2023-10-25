@@ -9,10 +9,14 @@ namespace uBuntuSouthAfrica.Areas.Identity.Pages.Donates
     public class AvailableFundsModel : PageModel
     {
         public List<BalanceInfo> listBalance = new List<BalanceInfo>();
-
-        public int NetAmount { get; internal set; }
+        public int NetAmount { get; set; }
 
         public void OnGet()
+        {
+            LoadBalanceInfo();
+        }
+
+        public void LoadBalanceInfo()
         {
             try
             {
@@ -51,17 +55,48 @@ namespace uBuntuSouthAfrica.Areas.Identity.Pages.Donates
                 Console.WriteLine("Exception: " + ex.ToString());
                 // You might want to handle the exception or log it appropriately instead of writing to the console.
             }
-        }
-    }
 
-    public class BalanceInfo
-    {
-        public string id;
-        public string DonorName;
-        public string DisasterType;
-        public string DisasterName;
-        public int Amount;  // Changed to int
-        public string MoneyType;
-        public int NetAmount;
+            // Calculate the NetAmount
+            NetAmount = CalculateNetAmount();
+        }
+
+        public int CalculateNetAmount()
+        {
+            int netAmount = 0;
+
+            // Perform your SQL query to calculate the NetAmount here
+            using (SqlConnection connection = new SqlConnection("Server=tcp:djpromorosebank1.database.windows.net,1433;Initial Catalog=DJPromoWebApp;Persist Security Info=False;User ID=djnathi;Password=Mamabolo777;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;"))
+            {
+                connection.Open();
+                string sql = "SELECT SUM(CASE WHEN MoneyType = 'income' THEN Amount ELSE 0 END) - SUM(CASE WHEN MoneyType = 'expense' THEN Amount ELSE 0 END) AS NetAmount FROM Funds";
+
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            if (!reader.IsDBNull(0))
+                            {
+                                netAmount = reader.GetInt32(0);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return netAmount;
+        }
+
+        public class BalanceInfo
+        {
+            public string id;
+            public string DonorName;
+            public string DisasterType;
+            public string DisasterName;
+            public int Amount;
+            public string MoneyType;
+            public int NetAmount;
+        }
     }
 }
