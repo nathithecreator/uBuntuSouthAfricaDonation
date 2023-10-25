@@ -73,9 +73,9 @@ namespace uBuntuSouthAfrica.Pages.Donates
                 return;
             }
 
-            if (string.IsNullOrEmpty(donateMoneyInfo.donorName) || string.IsNullOrEmpty(donateMoneyInfo.disasterName))
+            if (string.IsNullOrEmpty(donateMoneyInfo.disasterName))
             {
-                errorMessage = "Donor Name and Disaster Name are required fields.";
+                errorMessage = "Disaster Name is required.";
                 return;
             }
 
