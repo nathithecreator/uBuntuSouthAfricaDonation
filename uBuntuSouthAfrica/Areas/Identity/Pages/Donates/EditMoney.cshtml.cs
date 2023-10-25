@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Data.SqlClient;
 
@@ -12,12 +11,16 @@ namespace uBuntuSouthAfrica.Pages.Donates
         public string errorMessage = "";
         public string successMessage = "";
 
-        public void OnGet()
+        public void OnGet(string id)
         {
-            string id = Request.Query["id"];
-
             try
             {
+                if (string.IsNullOrEmpty(id))
+                {
+                    errorMessage = "Invalid or missing ID parameter.";
+                    return;
+                }
+
                 string connectionString = "Server=tcp:djpromorosebank1.database.windows.net,1433;Initial Catalog=DJPromoWebApp;Persist Security Info=False;User ID=djnathi;Password=Mamabolo777;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;";
                 SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(connectionString);
                 builder.TrustServerCertificate = true;
@@ -40,6 +43,10 @@ namespace uBuntuSouthAfrica.Pages.Donates
                                 donateMoneyInfo.date = reader.GetDateTime(3).ToString();
                                 donateMoneyInfo.amount = reader.GetDecimal(4); // Convert decimal to string
                             }
+                            else
+                            {
+                                errorMessage = "Record not found for the provided ID.";
+                            }
                         }
                     }
                 }
@@ -53,7 +60,7 @@ namespace uBuntuSouthAfrica.Pages.Donates
         public void OnPost()
         {
             donateMoneyInfo.id = Request.Form["id"];
-            donateMoneyInfo.donorName = Request.Form["name"];
+            donateMoneyInfo.donorName = Request.Form["donorName"];
             donateMoneyInfo.disasterName = Request.Form["disasterName"];
             // Parse the input amount as a decimal
             if (decimal.TryParse(Request.Form["amount"], out decimal parsedAmount))
@@ -68,7 +75,7 @@ namespace uBuntuSouthAfrica.Pages.Donates
 
             if (string.IsNullOrEmpty(donateMoneyInfo.donorName) || string.IsNullOrEmpty(donateMoneyInfo.disasterName))
             {
-                errorMessage = "All fields are required";
+                errorMessage = "Donor Name and Disaster Name are required fields.";
                 return;
             }
 
@@ -88,20 +95,24 @@ namespace uBuntuSouthAfrica.Pages.Donates
                         command.Parameters.AddWithValue("@id", donateMoneyInfo.id);
                         command.Parameters.AddWithValue("@donorName", donateMoneyInfo.donorName);
                         command.Parameters.AddWithValue("@disasterName", donateMoneyInfo.disasterName);
-                        command.Parameters.AddWithValue("@amount", donateMoneyInfo.amount); // Parse amount to decimal
+                        command.Parameters.AddWithValue("@amount", donateMoneyInfo.amount);
 
-                        command.ExecuteNonQuery();
+                        int rowsAffected = command.ExecuteNonQuery();
+                        if (rowsAffected > 0)
+                        {
+                            successMessage = "Money donation updated successfully.";
+                        }
+                        else
+                        {
+                            errorMessage = "Failed to update money donation.";
+                        }
                     }
                 }
             }
             catch (Exception ex)
             {
                 errorMessage = ex.Message;
-                return;
             }
-
-            Response.Redirect("/Identity/Donates/MoneyIndex");
         }
     }
-
 }
