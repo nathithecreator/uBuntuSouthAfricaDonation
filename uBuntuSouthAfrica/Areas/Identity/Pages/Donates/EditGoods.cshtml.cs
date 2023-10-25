@@ -12,11 +12,11 @@ namespace uBuntuSouthAfrica.Pages.Donates
 
         public void OnGet()
         {
-            String id = Request.Query["id"];
+            string id = Request.Query["id"];
 
             try
             {
-                String connectionString = "Server=tcp:djpromorosebank1.database.windows.net,1433;Initial Catalog=DJPromoWebApp;Persist Security Info=False;User ID=djnathi;Password=Mamabolo777;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;";
+                string connectionString = "Server=tcp:djpromorosebank1.database.windows.net,1433;Initial Catalog=DJPromoWebApp;Persist Security Info=False;User ID=djnathi;Password=Mamabolo777;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;";
                 SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(connectionString);
                 builder.TrustServerCertificate = true;
                 connectionString = builder.ConnectionString;
@@ -24,7 +24,7 @@ namespace uBuntuSouthAfrica.Pages.Donates
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    String sql = "SELECT * FROM GoodsDonations WHERE id=@id";
+                    string sql = "SELECT * FROM GoodsDonations WHERE id=@id";
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
                         command.Parameters.AddWithValue("@id", id);
@@ -51,10 +51,9 @@ namespace uBuntuSouthAfrica.Pages.Donates
             }
         }
 
-
         public void OnPost()
         {
-            GoodsInfo.id = Request.Query["id"];
+            GoodsInfo.id = Request.Form["id"];
             GoodsInfo.DisasterName = Request.Form["disastername"];
             GoodsInfo.DonorName = Request.Form["name"];
             GoodsInfo.date = Request.Form["date"];
@@ -63,26 +62,25 @@ namespace uBuntuSouthAfrica.Pages.Donates
             GoodsInfo.ItemDescription = Request.Form["description"];
             GoodsInfo.GoodsCost = int.Parse(Request.Form["goodscost"]);
 
-
             if (GoodsInfo.DonorName.Length == 0 || GoodsInfo.DisasterName.Length == 0 ||
                 GoodsInfo.Category.Length == 0 ||
                 GoodsInfo.ItemDescription.Length == 0)
             {
-                errorMessage = "All the field are required";
+                errorMessage = "All fields are required";
                 return;
             }
 
             try
             {
-                String connectionString = "Server=tcp:djpromorosebank1.database.windows.net,1433;Initial Catalog=DJPromoWebApp;Persist Security Info=False;User ID=djnathi;Password=Mamabolo777;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;";
+                string connectionString = "Server=tcp:djpromorosebank1.database.windows.net,1433;Initial Catalog=DJPromoWebApp;Persist Security Info=False;User ID=djnathi;Password=Mamabolo777;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;";
                 SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(connectionString);
                 builder.TrustServerCertificate = true;
                 connectionString = builder.ConnectionString;
+
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    String sql = "UPDATE GoodsDonations SET DisasterName=@DisasterName DonorName=@DonorName, NumberOfItems=@NumberOfItems, Category=@Category, ItemDescription=@ItemDescription,GoodsCost=@GoodsCost Date=GETDATE() WHERE ID=@id";
-
+                    string sql = "UPDATE GoodsDonations SET DisasterName=@DisasterName, DonorName=@DonorName, NumberOfItems=@NumberOfItems, Category=@Category, ItemDescription=@ItemDescription, GoodsCost=@GoodsCost, Date=GETDATE() WHERE ID=@id";
 
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
@@ -94,11 +92,9 @@ namespace uBuntuSouthAfrica.Pages.Donates
                         command.Parameters.AddWithValue("@ItemDescription", GoodsInfo.ItemDescription);
                         command.Parameters.AddWithValue("@GoodsCost", GoodsInfo.GoodsCost);
 
-
                         command.ExecuteNonQuery();
                     }
                 }
-
             }
             catch (Exception ex)
             {
@@ -107,8 +103,6 @@ namespace uBuntuSouthAfrica.Pages.Donates
             }
 
             Response.Redirect("/Identity/Donates/GoodsDonateIndex");
-
-
         }
     }
 }
