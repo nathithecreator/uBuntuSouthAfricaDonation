@@ -27,32 +27,30 @@ namespace uBuntuSouthAfrica.Pages.Donates
                     String sql = "SELECT * FROM GoodsDonations WHERE id=@id";
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
-                        command.Parameters.AddWithValue("id", id);
+                        command.Parameters.AddWithValue("@id", id);
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
                             if (reader.Read())
                             {
-                                GoodsInfo.id = "" + reader.GetInt32(0).ToString();
-                                GoodsInfo.DisasterName = reader.GetInt32(1).ToString();
+                                GoodsInfo.id = reader.GetInt32(0).ToString();
+                                GoodsInfo.DisasterName = reader.GetString(1);
                                 GoodsInfo.DonorName = reader.GetString(2);
                                 GoodsInfo.date = reader.GetDateTime(3).ToString();
-                                GoodsInfo.NumberOfItems = "" + reader.GetInt32(4).ToString();
+                                GoodsInfo.NumberOfItems = reader.GetInt32(4).ToString();
                                 GoodsInfo.Category = reader.GetString(5);
                                 GoodsInfo.ItemDescription = reader.GetString(6);
                                 GoodsInfo.GoodsCost = reader.GetInt32(7);
-
-
                             }
                         }
                     }
                 }
-
             }
             catch (Exception ex)
             {
                 errorMessage = ex.Message;
             }
         }
+
 
         public void OnPost()
         {
