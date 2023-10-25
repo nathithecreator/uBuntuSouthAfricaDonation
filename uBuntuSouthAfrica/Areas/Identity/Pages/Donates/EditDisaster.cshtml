@@ -27,6 +27,7 @@
 <form method="POST">
     <div class="row mb-3">
         <input type="hidden" name="id" value="@Model.disasterInfo.id" />
+            <input type="hidden" name="date" value="@Model.disasterInfo.Date" />
         <label class="col-sm-3 col-form-label"> Disaster Name <p style="color:orangered; font-size:14px;">(Optional)</p></label>
         <div class="col-sm-6">
             <input type="text" class="form-control" name="DisasterName" value="@Model.disasterInfo.DisasterName">
