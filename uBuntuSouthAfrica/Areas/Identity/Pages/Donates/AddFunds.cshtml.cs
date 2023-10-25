@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
 using System.Data.SqlClient;
+using static uBuntuSouthAfrica.Areas.Identity.Pages.Donates.AvailableFundsModel;
 
 namespace uBuntuSouthAfrica.Areas.Identity.Pages.Donates
 {
