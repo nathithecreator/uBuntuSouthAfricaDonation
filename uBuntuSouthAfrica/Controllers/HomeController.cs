@@ -2,9 +2,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using System.Data.SqlClient; // Import the SqlConnection namespace
+using System.Data.SqlClient;
 using uBuntuSouthAfrica.Areas.Identity.Data;
 using uBuntuSouthAfrica.Models;
+using uBuntuSouthAfrica.Areas.Identity.Pages.Donates;
 
 namespace uBuntuSouthAfrica.Controllers
 {
@@ -21,11 +22,20 @@ namespace uBuntuSouthAfrica.Controllers
 
         public IActionResult Index()
         {
-            ViewData["UserID"] = _userManager.GetUserId(this.User);
+            int netAmount = GetNetAmountFromDatabase();
 
-            int netAmount = 0; // Initialize netAmount to 0
+            var model = new AvailableFundsModel
+            {
+                NetAmount = netAmount
+            };
 
-            // Connect to your database and execute the SQL query to get NetAmount
+            return View(model);
+        }
+
+        private int GetNetAmountFromDatabase()
+        {
+            int netAmount = 0;
+
             using (SqlConnection connection = new SqlConnection("Server=tcp:djpromorosebank1.database.windows.net,1433;Initial Catalog=DJPromoWebApp;Persist Security Info=False;User ID=djnathi;Password=Mamabolo777;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;"))
             {
                 connection.Open();
@@ -37,7 +47,6 @@ namespace uBuntuSouthAfrica.Controllers
                     {
                         if (reader.Read())
                         {
-                            // Read the NetAmount value from the result
                             if (!reader.IsDBNull(0))
                             {
                                 netAmount = reader.GetInt32(0);
@@ -47,9 +56,7 @@ namespace uBuntuSouthAfrica.Controllers
                 }
             }
 
-            ViewData["NetAmount"] = netAmount; // Pass NetAmount to the view
-
-            return View();
+            return netAmount;
         }
 
         public IActionResult Privacy()
@@ -63,4 +70,5 @@ namespace uBuntuSouthAfrica.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
+
 }

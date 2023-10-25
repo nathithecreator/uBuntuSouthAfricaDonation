@@ -10,6 +10,8 @@ namespace uBuntuSouthAfrica.Areas.Identity.Pages.Donates
     {
         public List<BalanceInfo> listBalance = new List<BalanceInfo>();
 
+        public int NetAmount { get; internal set; }
+
         public void OnGet()
         {
             try
@@ -60,5 +62,6 @@ namespace uBuntuSouthAfrica.Areas.Identity.Pages.Donates
         public string DisasterName;
         public int Amount;  // Changed to int
         public string MoneyType;
+        public int NetAmount;
     }
 }
