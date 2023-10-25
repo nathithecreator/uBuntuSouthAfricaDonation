@@ -101,6 +101,7 @@ namespace uBuntuSouthAfrica.Pages.Donates
                         if (rowsAffected > 0)
                         {
                             successMessage = "Money donation updated successfully.";
+                            Response.Redirect("/Identity/Donates/MoneyIndex");
                         }
                         else
                         {
