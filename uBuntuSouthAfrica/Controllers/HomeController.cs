@@ -40,7 +40,7 @@ namespace uBuntuSouthAfrica.Controllers
                             // Read the NetAmount value from the result
                             if (!reader.IsDBNull(0))
                             {
-                                netAmount = (int)reader.GetInt32(0);
+                                netAmount = reader.GetInt32(0);
                             }
                         }
                     }

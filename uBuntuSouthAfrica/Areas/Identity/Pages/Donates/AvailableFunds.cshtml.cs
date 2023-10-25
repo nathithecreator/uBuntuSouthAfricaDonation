@@ -10,14 +10,8 @@ namespace uBuntuSouthAfrica.Areas.Identity.Pages.Donates
     {
         public List<BalanceInfo> listBalance = new List<BalanceInfo>();
 
-        // Define the SQL query as a variable
-        public string NetAmountQuery { get; set; } // This property should be here
-
         public void OnGet()
         {
-            // Define the SQL query as a variable
-            NetAmountQuery = "SELECT SUM(CASE WHEN MoneyType = 'income' THEN Amount ELSE 0 END) - SUM(CASE WHEN MoneyType = 'expense' THEN Amount ELSE 0 END) AS NetAmount FROM Funds";
-
             try
             {
                 string connectionString = "Server=tcp:djpromorosebank1.database.windows.net,1433;Initial Catalog=DJPromoWebApp;Persist Security Info=False;User ID=djnathi;Password=Mamabolo777;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;";
@@ -28,9 +22,7 @@ namespace uBuntuSouthAfrica.Areas.Identity.Pages.Donates
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-
-                    // Use the SQL query variable here
-                    string sql = NetAmountQuery;
+                    string sql = "SELECT ID, DonorName, DisasterType, DisasterName, Amount, MoneyType FROM Funds";
 
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
