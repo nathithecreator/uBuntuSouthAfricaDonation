@@ -18,13 +18,16 @@
 
 @if (Model.errorMessage.Length > 0)
 {
-    <div class='alert alert-warming alert-dismissible fade show' role="alert">
+    <div class='alert alert-warning alert-dismissible fade show' role="alert">
         <strong>@Model.errorMessage</strong>
         <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
     </div>
 }
 
 <form method="POST">
+    <!-- Add a hidden input field to store the ID -->
+    <input type="hidden" name="id" value="@Model.donateMoneyInfo.id" />
+
     <div class="row mb-3">
         <label class="col-sm-3 col-form-label" style="color:white; border-color:white;">Donor Name <p style="color:orangered; font-size:14px;">(Optional)</p></label>
         <div class="col-sm-6">
@@ -46,7 +49,7 @@
 
     @if (Model.successMessage.Length > 0)
     {
-        <div class='alert alert-warming alert-dismissible fade show' role="alert">
+        <div class='alert alert-success alert-dismissible fade show' role="alert">
             <strong>@Model.successMessage</strong>
             <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
         </div>
