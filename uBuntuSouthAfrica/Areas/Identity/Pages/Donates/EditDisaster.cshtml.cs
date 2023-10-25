@@ -34,11 +34,10 @@ namespace uBuntuSouthAfrica.Pages.Donates
                             if (reader.Read())
                             {
                                 disasterInfo.id = reader.GetInt32(0).ToString();
-                                disasterInfo.Date = reader.GetDateTime(1); 
-                                disasterInfo.DisasterName = reader.GetString(2);
-                                disasterInfo.Location = reader.GetString(3);
-                                disasterInfo.Description = reader.GetString(4);
-                                disasterInfo.DonationType = reader.GetString(5);
+                                disasterInfo.DisasterName = reader.GetString(1);
+                                disasterInfo.Location = reader.GetString(2);
+                                disasterInfo.Description = reader.GetString(3);
+                                disasterInfo.DonationType = reader.GetString(4);
                             }
                         }
                     }

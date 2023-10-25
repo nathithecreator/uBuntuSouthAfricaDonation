@@ -88,7 +88,6 @@ namespace uBuntuSouthAfrica.Pages.Donates
     public class DisasterInfo
     {
         public string id;
-        public DateTime Date;
         public string DisasterName;
         public string Location;
         public string Description;
