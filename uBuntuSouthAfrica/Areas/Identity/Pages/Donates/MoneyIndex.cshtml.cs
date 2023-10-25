@@ -9,7 +9,7 @@ namespace uBuntuSouthAfrica.Pages.Donates
     public class IndexModel : PageModel
     {
         public List<DonateMoneyInfo> listDonate = new List<DonateMoneyInfo>();
-
+        public int NetAmount { get; set; }
         public void OnGet()
         {
             try
@@ -47,6 +47,34 @@ namespace uBuntuSouthAfrica.Pages.Donates
             {
                 Console.WriteLine("Exception: " + ex.ToString());
             }
+            NetAmount = CalculateNetAmount();
+        }
+        public int CalculateNetAmount()
+        {
+            int netAmount = 0;
+
+            // Perform your SQL query to calculate the NetAmount here
+            using (SqlConnection connection = new SqlConnection("Server=tcp:djpromorosebank1.database.windows.net,1433;Initial Catalog=DJPromoWebApp;Persist Security Info=False;User ID=djnathi;Password=Mamabolo777;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;"))
+            {
+                connection.Open();
+                string sql = "SELECT SUM(CASE WHEN MoneyType = 'income' THEN Amount ELSE 0 END) - SUM(CASE WHEN MoneyType = 'expense' THEN Amount ELSE 0 END) AS NetAmount FROM Funds";
+
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            if (!reader.IsDBNull(0))
+                            {
+                                netAmount = reader.GetInt32(0);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return netAmount;
         }
     }
 
