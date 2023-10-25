@@ -45,11 +45,15 @@
         </div>
     </div>
     <div class="row mb-3">
-        <label class="col-sm-3 col-form-label">Donation Type</label>
-        <div class="col-sm-6">
-            <input type="text" class="form-control" name="DonationType" value="@Model.disasterInfo.DonationType">
-        </div>
+    <label class="col-sm-3 col-form-label">Donation Type</label>
+    <div class="col-sm-6">
+        <select class="form-control" name="DonationType">
+            <option value="Goods">Goods</option>
+            <option value="Money">Money</option>
+        </select>
     </div>
+</div>
+
 
     @if (Model.successMessage.Length > 0)
     {
