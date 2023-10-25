@@ -8,8 +8,7 @@ namespace uBuntuSouthAfrica.Pages.Donates
 {
     public class AddDisasterModel : PageModel
     {
-        public int NetAmount { get; set; } // Add the NetAmount property here
-
+        
         public DisasterInfo disasterInfo = new DisasterInfo();
         public string errorMessage = "";
         public string successMessage = "";
@@ -28,25 +27,25 @@ namespace uBuntuSouthAfrica.Pages.Donates
             // Check if donorName is empty or null, and set it to anonymous if true
             if (string.IsNullOrEmpty(disasterInfo.DisasterName))
             {
-                errorMessage = "An amount is required";
+                errorMessage = "A Disaster Name is required";
                 return;
             }
 
             if (string.IsNullOrEmpty(disasterInfo.Location))
             {
-                errorMessage = "An amount is required";
+                errorMessage = "A Location is required";
                 return;
             }
 
             if (string.IsNullOrEmpty(disasterInfo.Description))
             {
-                errorMessage = "An amount is required";
+                errorMessage = "A Description is required";
                 return;
             }
 
             if (string.IsNullOrEmpty(disasterInfo.DonationType))
             {
-                errorMessage = "An amount is required";
+                errorMessage = "A DonationType is required";
                 return;
             }
 
