@@ -15,7 +15,7 @@
 <p style="font-weight: bold; color: white; font-size: 32px;">Available Balance: R @Model.NetAmount</p>
 <a class='btn btn-sm' href="/Identity/Donates/AddFunds" style='background-color: mediumpurple; border-color: mediumpurple; '>Add Money to Wallet</a>
 
-<table class="table" style="background-color: white;">
+<table class="table" style="background-color: white; color:purple;">
     <thead>
         <tr>
             <th>Disaster Name</th>
@@ -31,7 +31,7 @@
                 <td>@item.DisasterName</td>
                 <td>@item.DisasterType</td>
                 <td>@item.MoneyType</td>
-                <td>@item.Amount</td>
+                <td>R @item.Amount</td>
             </tr>
         }
     </tbody>
