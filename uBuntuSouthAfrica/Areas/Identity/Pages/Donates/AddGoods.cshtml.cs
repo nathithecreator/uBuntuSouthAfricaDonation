@@ -50,12 +50,14 @@ namespace uBuntuSouthAfrica.Pages.Donates
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
+
                     using (SqlTransaction transaction = connection.BeginTransaction()) // Start a transaction
                     {
                         try
                         {
                             // Insert into GoodsDonation
-                            string goodsSql = "INSERT INTO GoodsDonation (DisasterName, DonorName, Category, ItemDescription, NumberOfItems, GoodsCost) VALUES (@disasterName, @donorName, @category, @itemDescription, @numOfItems, @goodsCost);";
+                            string goodsSql = "INSERT INTO GoodsDonation (DisasterName, DonorName, Category, ItemDescription, NumberOfItems, GoodsCost) " +
+                                              "VALUES (@disasterName, @donorName, @category, @itemDescription, @numOfItems, @goodsCost);";
                             using (SqlCommand goodsCommand = new SqlCommand(goodsSql, connection, transaction))
                             {
                                 goodsCommand.Parameters.AddWithValue("@disasterName", donateGoodsInfo.DisasterName);
@@ -68,7 +70,8 @@ namespace uBuntuSouthAfrica.Pages.Donates
                             }
 
                             // Insert into Funds
-                            string fundsSql = "INSERT INTO Funds (DonorName, DisasterType, DisasterName, Amount, MoneyType) VALUES (@donorName, 'Goods', @disasterName, @goodsCost, 'expense');";
+                            string fundsSql = "INSERT INTO Funds (DonorName, DisasterType, DisasterName, Amount, MoneyType) " +
+                                             "VALUES (@donorName, 'Goods', @disasterName, @goodsCost, 'expense');";
                             using (SqlCommand fundsCommand = new SqlCommand(fundsSql, connection, transaction))
                             {
                                 fundsCommand.Parameters.AddWithValue("@disasterName", donateGoodsInfo.DisasterName);
