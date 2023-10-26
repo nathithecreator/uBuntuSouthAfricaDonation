@@ -18,8 +18,8 @@
 <table class="table" style="background-color: white;">
     <thead>
         <tr>
-            <th>Donor Name</th>
-            <th>Disaster Type</th>
+            <th>Disaster Name</th>
+            <th>Donation Type</th>
             <th>Money Type</th>
             <th>Amount</th>
         </tr>
@@ -28,7 +28,7 @@
         @foreach (var item in Model.listBalance)
         {
             <tr>
-                <td>@item.DonorName</td>
+                <td>@item.DisasterName</td>
                 <td>@item.DisasterType</td>
                 <td>@item.MoneyType</td>
                 <td>@item.Amount</td>
