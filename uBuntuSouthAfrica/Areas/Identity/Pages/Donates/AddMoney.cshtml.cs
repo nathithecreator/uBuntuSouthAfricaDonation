@@ -71,7 +71,7 @@ namespace uBuntuSouthAfrica.Pages.Donates
                         }
 
                         // Insert into "Funds" table
-                        string fundsSql = "INSERT INTO Funds (DonorName, DisasterType, DisasterName, Amount, MoneyType) VALUES (@donorName, 'expense' , @donorDisaster, @amount, 'expense');";
+                        string fundsSql = "INSERT INTO Funds (DonorName, DisasterType, DisasterName, Amount, MoneyType) VALUES (@donorName, 'Money' , @donorDisaster, @amount, 'expense');";
                         using (SqlCommand fundsCommand = new SqlCommand(fundsSql, connection, transaction))
                         {
                             fundsCommand.Parameters.AddWithValue("@donorName", donateMoneyInfo.donorName);
