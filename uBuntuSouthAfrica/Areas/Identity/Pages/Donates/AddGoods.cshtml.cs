@@ -56,7 +56,7 @@ namespace uBuntuSouthAfrica.Pages.Donates
                         try
                         {
                             // Insert into GoodsDonation
-                            string goodsSql = "INSERT INTO GoodsDonation (DisasterName, DonorName, Category, ItemDescription, NumberOfItems, GoodsCost) VALUES (@disasterName, @donorName, @category, @itemDescription, @numOfItems, @goodsCost);";
+                            string goodsSql = "INSERT INTO GoodsDonations (DisasterName, DonorName, Category, ItemDescription, NumberOfItems, GoodsCost) VALUES (@disasterName, @donorName, @category, @itemDescription, @numOfItems, @goodsCost);";
                             using (SqlCommand goodsCommand = new SqlCommand(goodsSql, connection, transaction))
                             {
                                 goodsCommand.Parameters.AddWithValue("@disasterName", donateGoodsInfo.DisasterName);
