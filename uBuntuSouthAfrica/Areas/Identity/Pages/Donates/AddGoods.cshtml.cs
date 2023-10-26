@@ -41,7 +41,7 @@ namespace uBuntuSouthAfrica.Pages.Donates
                 return;
             }
 
-            string selectedCategory = string.IsNullOrEmpty(category) ? otherCategory : category;
+            string selectedCategory = category == "Others" ? otherCategory : category;
 
             try
             {
