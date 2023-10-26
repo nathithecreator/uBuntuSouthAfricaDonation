@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using uBuntuSouthAfrica.Pages.Donates;
 using System;
 using System.Data.SqlClient;
 
@@ -44,51 +43,59 @@ namespace uBuntuSouthAfrica.Pages.Donates
 
             string selectedCategory = string.IsNullOrEmpty(category) ? otherCategory : category;
 
-            string connectionString = "Server=tcp:djpromorosebank1.database.windows.net,1433;Initial Catalog=DJPromoWebApp;Persist Security Info=False;User ID=djnathi;Password=Mamabolo777;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;";
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            try
             {
-                connection.Open();
-                SqlTransaction transaction = connection.BeginTransaction(); // Start a transaction
+                string connectionString = "Server=tcp:djpromorosebank1.database.windows.net,1433;Initial Catalog=DJPromoWebApp;Persist Security Info=False;User ID=djnathi;Password=Mamabolo777;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;";
 
-                try
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    // Insert into GoodsDonation
-                    string goodsSql = "INSERT INTO GoodsDonation (DisasterName, DonorName, Category, ItemDescription, NumberOfItems, GoodsCost) " +
-                                      "VALUES (@disasterName, @donorName, @category, @itemDescription, @numOfItems, @goodsCost);";
-                    using (SqlCommand goodsCommand = new SqlCommand(goodsSql, connection, transaction))
+                    connection.Open();
+                    using (SqlTransaction transaction = connection.BeginTransaction()) // Start a transaction
                     {
-                        goodsCommand.Parameters.AddWithValue("@disasterName", donateGoodsInfo.DisasterName);
-                        goodsCommand.Parameters.AddWithValue("@donorName", donateGoodsInfo.DonorName);
-                        goodsCommand.Parameters.AddWithValue("@category", selectedCategory);
-                        goodsCommand.Parameters.AddWithValue("@itemDescription", donateGoodsInfo.ItemDescription);
-                        goodsCommand.Parameters.AddWithValue("@numOfItems", donateGoodsInfo.NumberOfItems);
-                        goodsCommand.Parameters.AddWithValue("@goodsCost", donateGoodsInfo.GoodsCost);
-                        goodsCommand.ExecuteNonQuery();
-                    }
+                        try
+                        {
+                            // Insert into GoodsDonation
+                            string goodsSql = "INSERT INTO GoodsDonation (DisasterName, DonorName, Category, ItemDescription, NumberOfItems, GoodsCost) " +
+                                              "VALUES (@disasterName, @donorName, @category, @itemDescription, @numOfItems, @goodsCost);";
+                            using (SqlCommand goodsCommand = new SqlCommand(goodsSql, connection, transaction))
+                            {
+                                goodsCommand.Parameters.AddWithValue("@disasterName", donateGoodsInfo.DisasterName);
+                                goodsCommand.Parameters.AddWithValue("@donorName", donateGoodsInfo.DonorName);
+                                goodsCommand.Parameters.AddWithValue("@category", selectedCategory);
+                                goodsCommand.Parameters.AddWithValue("@itemDescription", donateGoodsInfo.ItemDescription);
+                                goodsCommand.Parameters.AddWithValue("@numOfItems", donateGoodsInfo.NumberOfItems);
+                                goodsCommand.Parameters.AddWithValue("@goodsCost", donateGoodsInfo.GoodsCost);
+                                goodsCommand.ExecuteNonQuery();
+                            }
 
-                    // Insert into Funds
-                    string fundsSql = "INSERT INTO Funds (DonorName, DisasterType, DisasterName, Amount, MoneyType) " +
-                                     "VALUES (@donorName, 'Goods', @disasterName, @goodsCost, 'expense');";
-                    using (SqlCommand fundsCommand = new SqlCommand(fundsSql, connection, transaction))
-                    {
-                        fundsCommand.Parameters.AddWithValue("@disasterName", donateGoodsInfo.DisasterName);
-                        fundsCommand.Parameters.AddWithValue("@donorName", donateGoodsInfo.DonorName);
-                        fundsCommand.Parameters.AddWithValue("@goodsCost", donateGoodsInfo.GoodsCost);
-                        fundsCommand.ExecuteNonQuery();
-                    }
+                            // Insert into Funds
+                            string fundsSql = "INSERT INTO Funds (DonorName, DisasterType, DisasterName, Amount, MoneyType) " +
+                                             "VALUES (@donorName, 'Goods', @disasterName, @goodsCost, 'expense');";
+                            using (SqlCommand fundsCommand = new SqlCommand(fundsSql, connection, transaction))
+                            {
+                                fundsCommand.Parameters.AddWithValue("@disasterName", donateGoodsInfo.DisasterName);
+                                fundsCommand.Parameters.AddWithValue("@donorName", donateGoodsInfo.DonorName);
+                                fundsCommand.Parameters.AddWithValue("@goodsCost", donateGoodsInfo.GoodsCost);
+                                fundsCommand.ExecuteNonQuery();
+                            }
 
-                    transaction.Commit(); // Commit the transaction if both insertions are successful
-                    successMessage = "New Donations Added Successfully";
+                            transaction.Commit(); // Commit the transaction if both insertions are successful
+                            successMessage = "New Donations Added Successfully";
+                        }
+                        catch (Exception ex)
+                        {
+                            transaction.Rollback(); // Roll back the transaction in case of an error
+                            errorMessage = "Error inserting data: " + ex.Message;
+                        }
+                    }
                 }
-                catch (Exception ex)
-                {
-                    transaction.Rollback(); // Roll back the transaction in case of an error
-                    errorMessage = ex.Message;
-                }
+            }
+            catch (Exception ex)
+            {
+                errorMessage = "Database connection error: " + ex.Message;
             }
 
             Response.Redirect("/Identity/Donates/GoodsDonateIndex");
         }
     }
-
 }
