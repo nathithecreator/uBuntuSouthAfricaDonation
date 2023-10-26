@@ -17,7 +17,7 @@
 <p style="font-weight: bold; color: white; font-size:18px;">Available Balance: R @Model.NetAmount</p>
 <a class='btn  btn-sm' href="/Identity/Donates/AddGoods" style='background-color: orange; border-color:orange;'>Donate a Goodie</a>
 
-<table class="table" style="background-color: white;">
+<table class="table" style="background-color: white; color:purple;">
     <thead>
         <tr>
             <th>Disaster</th>
@@ -38,7 +38,7 @@
             <td>@item.NumberOfItems</td>
             <td>@item.Category</td>
             <td>@item.ItemDescription</td>
-            <td>@item.GoodsCost</td>
+            <td>R @item.GoodsCost</td>
             <td>
                 <a class="btn btn-primary btn-sm" href="/Identity/Donates/EditGoods?id=@item.id" style="background-color:orange; border-color:orange;">Edit</a>
             </td>
